@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
   private final Color kRedTarget = new Color(0.472412, 0.370605, 0.157227);
   private final Color kCarpetTarget = new Color(0.249023, 0.480713, 0.273926);
 
-  private final double target = 9.2;
+  private final double target = 10.2;
 
 
   /**
