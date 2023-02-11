@@ -15,14 +15,13 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import static frc.robot.Constants.*;
 
-import java.util.function.DoubleSupplier;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.util.Color;
-  
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 
 
@@ -34,8 +33,6 @@ import edu.wpi.first.wpilibj.I2C;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   XboxController exampleXbox = new XboxController(0);
@@ -47,16 +44,18 @@ public class Robot extends TimedRobot {
   private Pigeon2 m_pigeon = new Pigeon2(0);
 
   private final I2C.Port i2cPort = I2C.Port.kMXP;
+  private final DigitalInput magnetSensor = new DigitalInput(9);
 
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
   private final ColorMatch m_colorMatcher = new ColorMatch();
+  private ColorMatchResult match;
 
   private final Color kBlueTarget = new Color(0.193848, 0.418701, 0.388428);
   private final Color kRedTarget = new Color(0.472412, 0.370605, 0.157227);
   private final Color kCarpetTarget = new Color(0.249023, 0.480713, 0.273926);
 
-  private final double target = 10.2;
+  private final double target = 7.2;
 
 
   /**
@@ -89,6 +88,8 @@ public class Robot extends TimedRobot {
 
     driveTab.addDouble("Xbox Left X", () -> exampleXbox.getLeftX());
     driveTab.addDouble("Xbox Left Y", () -> exampleXbox.getLeftY());
+
+    driveTab.addBoolean("Magnet", () -> magnetSensor.get());
 
 
   }
@@ -225,7 +226,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    setMotorSpeed(0.1);
+    setMotorSpeed(0.25);
     Detected = false;
   }
 
